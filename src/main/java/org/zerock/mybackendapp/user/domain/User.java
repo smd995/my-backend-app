@@ -54,13 +54,6 @@ public class User {
         this.email = newEmail;
     }
 
-    // 도메인 로직 - 사용자명 업데이트
-    public void updateUsername(String newUsername) {
-        validateUsername(newUsername);
-        log.info("사용자명 업데이트: {} => {}", this.username, newUsername);
-        this.username = newUsername;
-    }
-
     private static void validateUsername(String username) {
         if(username == null || username.trim().isEmpty()) {
             throw new IllegalArgumentException("사용자명은 필수입니다.");
@@ -97,17 +90,5 @@ public class User {
     @Override
     public String toString() {
         return String.format("User{id=%d, username='%s', email='%s'}", id, username, email);
-    }
-
-    public boolean isSameUser(User other){
-        return this.id != null && this.id.equals(other.getId());
-    }
-
-    public boolean hasUsername(String username) {
-        return this.username.equals(username);
-    }
-
-    public boolean hasEmail(String email) {
-        return this.email.equals(email);
     }
 }
