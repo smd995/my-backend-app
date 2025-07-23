@@ -5,13 +5,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
+import org.zerock.mybackendapp.auth.filter.JwtAuthenticationFilter;
+import org.zerock.mybackendapp.config.SecurityConfig;
 import org.zerock.mybackendapp.post.domain.Post;
 import org.zerock.mybackendapp.post.service.PostService;
+import org.zerock.mybackendapp.user.controller.UserController;
 import org.zerock.mybackendapp.user.domain.User;
 
 import java.util.List;
@@ -30,9 +36,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 
 @WebMvcTest(controllers = PostController.class,
-            excludeAutoConfiguration = {
-                org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class,
-            })
+        excludeAutoConfiguration = SecurityAutoConfiguration.class,
+        excludeFilters = {
+                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE,
+                        classes = {SecurityConfig.class, JwtAuthenticationFilter.class})}
+)
 @Slf4j
 @DisplayName("Post Controller 테스트")
 class PostControllerTest {
